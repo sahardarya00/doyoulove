@@ -2,89 +2,119 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- این خط خیلی مهمه برای موبایل! -->
   <title>دوست داری منو؟ 😍</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: system-ui, -apple-system, sans-serif;
       background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-      height: 100vh;
-      margin: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 15px;
       overflow: hidden;
     }
     h1 {
-      font-size: 3.8rem;
+      font-size: clamp(2rem, 8vw, 3.5rem); /* اندازه فونت responsive */
       color: #c0392b;
-      margin: 20px 0 30px;
-      text-shadow: 3px 3px 12px rgba(0,0,0,0.25);
+      margin: 15px 0 20px;
+      text-align: center;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
     }
     .image-top {
-      width: 320px;
-      height: 240px;
-      object-fit: cover;
+      width: 100%;
+      max-width: 320px;
+      height: auto;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
       margin-bottom: 20px;
     }
     .buttons {
       position: relative;
       display: flex;
-      gap: 120px;
-      margin: 30px 0;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 60px;
+      width: 100%;
+      max-width: 500px;
+      margin: 20px 0;
     }
     button {
-      font-size: 2rem;
-      padding: 20px 70px;
+      font-size: clamp(1.4rem, 6vw, 2rem);
+      padding: 15px 50px;
       border: none;
       border-radius: 999px;
       color: white;
       cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      touch-action: manipulation; /* بهتر شدن لمس روی موبایل */
     }
     #yes {
       background: #e74c3c;
     }
-    #yes:hover {
-      transform: scale(1.18);
+    #yes:active {
+      transform: scale(1.15);
       background: #c0392b;
     }
     #no {
       background: #7f8c8d;
       position: absolute;
+      touch-action: none; /* جلوگیری از اسکرول ناخواسته */
     }
-    #no:hover {
+    #no:active {
       background: #95a5a6;
     }
     #result {
       display: none;
       flex-direction: column;
       align-items: center;
-      margin-top: 40px;
+      margin-top: 30px;
     }
     #loveMessage {
-      font-size: 4.5rem;
+      font-size: clamp(2.5rem, 10vw, 4.5rem);
       font-weight: bold;
       color: #e84393;
       margin: 20px 0;
+      text-align: center;
       text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
     }
     .image-love {
-      width: 380px;
-      height: 300px;
-      object-fit: cover;
+      width: 100%;
+      max-width: 380px;
+      height: auto;
       border-radius: 25px;
-      box-shadow: 0 15px 40px rgba(231, 76, 60, 0.5);
-      margin-top: 20px;
+      box-shadow: 0 12px 35px rgba(231, 76, 60, 0.5);
+      margin-top: 15px;
+    }
+
+    /* برای موبایل کوچیک‌تر */
+    @media (max-width: 600px) {
+      .buttons {
+        gap: 40px;
+        flex-direction: column; /* دکمه‌ها عمودی بشن اگر جا نبود */
+        align-items: center;
+      }
+      button {
+        width: 80%;
+        padding: 18px 0;
+      }
+      #no {
+        position: relative; /* روی موبایل ثابت بمونه تا لمس کار کنه */
+      }
     }
   </style>
 </head>
 <body>
 
-  <img src="./1.jpg" alt="عاشقانه" class="image-top">
+  <img src="https://wallpapers.com/images/hd/anime-couple-hug-curly-hair-2yn9i60ifzas77dx.jpg" alt="عاشقانه" class="image-top">
 
   <h1>دوست داری منو؟ 🥺💕</h1>
 
@@ -95,32 +125,43 @@
 
   <div id="result">
     <div id="loveMessage">ایلایوووو توووو 💘✨</div>
-    <img src="./1.jpg" alt="دوستت دارم" class="image-love">
+    <img src="https://.jpg" alt="دوستت دارم" class="image-love">
   </div>
 
   <script>
-    const yes = document.getElementById('yes');
-    const no = document.getElementById('no');
+    const yesBtn = document.getElementById('yes');
+    const noBtn = document.getElementById('no');
     const result = document.getElementById('result');
 
-    yes.addEventListener('click', () => {
+    // وقتی "آره" زده شد
+    yesBtn.addEventListener('click', () => {
       result.style.display = 'flex';
-      no.style.display = 'none';
-      yes.style.display = 'none';
+      noBtn.style.display = 'none';
+      yesBtn.style.display = 'none';
     });
 
+    // تابع جابجا کردن دکمه نه
     function escapeNo() {
-      const maxX = window.innerWidth - 240;
-      const maxY = window.innerHeight - 140;
+      const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 40;
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
-      no.style.left = x + 'px';
-      no.style.top = y + 'px';
-      no.style.position = 'fixed';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+      noBtn.style.position = 'fixed';
     }
 
-    no.addEventListener('mouseover', escapeNo);
-    no.addEventListener('click', (e) => {
+    // برای دسکتاپ: hover
+    noBtn.addEventListener('mouseover', escapeNo);
+
+    // برای موبایل: touchstart (لمس کردن)
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // جلوگیری از اسکرول یا زوم
+      escapeNo();
+    });
+
+    // اگر کسی خیلی سعی کرد کلیک کنه (fallback)
+    noBtn.addEventListener('click', (e) => {
       e.preventDefault();
       escapeNo();
     });
